@@ -20,7 +20,7 @@ client.on('messageCreate', async (message) => {
             message: message.id,
             count: 0
         })
-    } else {
+    } else if (message.channel.id === process.env['MEME_CHANNEL']) {
         message.delete();
         const dontSendEmbed = new MessageEmbed()
             .setColor('RANDOM')
