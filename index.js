@@ -39,7 +39,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
             memes.forEach((meme) => {
                 if (meme['message'] === reaction.message.id) {
                     meme['count'] += 1;
-                    sendDailyMeme()
                 }
             })
         }, 3000);
