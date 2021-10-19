@@ -20,17 +20,18 @@ client.on('messageCreate', async (message) => {
             message: message.id,
             count: 0
         })
-    } else if (message.channel.id === process.env['MEME_CHANNEL'] && (!message.author.bot)) {
-        message.delete();
-        const dontSendEmbed = new MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle('You can\'t send messages other than memes here 😇')
-        message.channel.send({ embeds: [dontSendEmbed] }).then((dontSendMessage) => {
-            setTimeout(() => {
-                dontSendMessage.delete();
-            }, 3000);
-        });
     }
+    // } else if (message.channel.id === process.env['MEME_CHANNEL'] && (!message.author.bot)) {
+    //     message.delete();
+    //     const dontSendEmbed = new MessageEmbed()
+    //         .setColor('RANDOM')
+    //         .setTitle('You can\'t send messages other than memes here 😇')
+    //     message.channel.send({ embeds: [dontSendEmbed] }).then((dontSendMessage) => {
+    //         setTimeout(() => {
+    //             dontSendMessage.delete();
+    //         }, 3000);
+    //     });
+    // }
 })
 
 client.on('messageReactionAdd', async (reaction, user) => { 
