@@ -7,7 +7,7 @@ dotenv.config();
 
 client.once('ready', () => {
 	console.log('Ready!');
-    setTimeout(sendDailyMeme, 8.64e+7);
+    setTimeout(sendDailyMeme, 2.592e+8);
 });
 
 let memes = [];
@@ -51,7 +51,7 @@ function sendDailyMeme() {
     const topMemes = memes.filter((meme) => meme.count === highestMemeUpvote);
     const queue = new Queue(1, Infinity);
     topMemes.forEach((meme) => {
-        const memeMessage = client.channels.cache.get(process.env['MEME_CHANNEL']).messages.cache.get(meme.message);
+        const memeMessage = client.channels.cache.get('857091161612484632').messages.cache.get(meme.message);
         const memeEmbed = new MessageEmbed()
             .setAuthor(memeMessage.author.username, memeMessage.author.avatarURL())
             .setColor('#2f3137')
@@ -64,7 +64,7 @@ function sendDailyMeme() {
         })
     })
     memes = [];
-    setTimeout(sendDailyMeme, 8.64e+7);
+    setTimeout(sendDailyMeme, 2.592e+8);
 }
 
 client.login(process.env['TOKEN']);
