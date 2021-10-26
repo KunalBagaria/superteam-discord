@@ -19,8 +19,8 @@ dotenv.config();
 
 client.once('ready', () => {
 	console.log('Ready!');
-    setTimeout(sendDailyMeme, 2.592e+8);
-    override();
+    setTimeout(sendMeme, 2.592e+8);
+    // override();
 });
 
 let memes = [];
@@ -59,7 +59,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 })
 
-function sendDailyMeme() {
+function sendMeme() {
     const memeUpvotes = memes.map((meme) => meme.count);
     const highestMemeUpvote = Math.max(...memeUpvotes);
     const topMemes = memes.filter((meme) => meme.count === highestMemeUpvote);
@@ -69,7 +69,7 @@ function sendDailyMeme() {
         const memeEmbed = new MessageEmbed()
             .setAuthor(memeMessage.author.username, memeMessage.author.avatarURL())
             .setColor('#2f3137')
-            .setTitle('Top Voted Meme for Today')
+            .setTitle('Top Voted Meme in 3 days')
             .setImage(memeMessage.attachments.first().url)
             .setFooter(`Upvotes 👍  — ${meme.count}`)
             .setTimestamp()
@@ -78,7 +78,7 @@ function sendDailyMeme() {
         })
     })
     memes = [];
-    setTimeout(sendDailyMeme, 2.592e+8);
+    setTimeout(sendMeme, 2.592e+8);
 }
 
 client.login(process.env['TOKEN']);
