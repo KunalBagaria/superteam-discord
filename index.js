@@ -5,9 +5,22 @@ import Queue from 'promise-queue';
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 dotenv.config();
 
+// const override = async () => {
+//     const memeEmbed = new MessageEmbed()
+//         .setAuthor("MemeCodeMoney#5705", "https://cdn.discordapp.com/avatars/839233984059408448/6b69c19a6fb905311a1916f244c6b1c2.webp?size=80")
+//         .setColor('#2f3137')
+//         .setTitle('Top Voted Meme in the last 7 days')
+//         .setImage("https://cdn.discordapp.com/attachments/894872542312013864/899984572975038464/nms3ku.jpg")
+//         .setFooter(`Upvotes 👍  — 11`)
+//         .setTimestamp()
+//     const generalChannel = await client.channels.cache.get('857091161612484632')
+//     generalChannel.send({ embeds: [memeEmbed] });
+// }
+
 client.once('ready', () => {
 	console.log('Ready!');
     setTimeout(sendDailyMeme, 2.592e+8);
+    override();
 });
 
 let memes = [];
@@ -17,7 +30,7 @@ client.on('messageCreate', async (message) => {
     if (message.channel.id === process.env['MEME_CHANNEL'] && message.attachments.size > 0) {
         await message.react('👍')
         memes.push({
-            message: message.id,
+            message: message,
             count: 0
         })
     }
@@ -34,11 +47,11 @@ client.on('messageCreate', async (message) => {
     // }
 })
 
-client.on('messageReactionAdd', async (reaction, user) => { 
+client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.channel.id === process.env['MEME_CHANNEL'] && reaction.emoji.name === '👍') {
         setTimeout(() => {
             memes.forEach((meme) => {
-                if (meme['message'] === reaction.message.id) {
+                if (meme['message'].id === reaction.message.id) {
                     meme['count'] += 1;
                 }
             })
@@ -52,7 +65,7 @@ function sendDailyMeme() {
     const topMemes = memes.filter((meme) => meme.count === highestMemeUpvote);
     const queue = new Queue(1, Infinity);
     topMemes.forEach((meme) => {
-        const memeMessage = client.channels.cache.get('857091161612484632').messages.cache.get(meme.message);
+        const memeMessage = meme.message;
         const memeEmbed = new MessageEmbed()
             .setAuthor(memeMessage.author.username, memeMessage.author.avatarURL())
             .setColor('#2f3137')
@@ -70,7 +83,6 @@ function sendDailyMeme() {
 
 client.login(process.env['TOKEN']);
 
-process.on('uncaughtException', () => {
-    console.log('Uncaught Exception');
-    process.exit(1);
+process.on('uncaughtException', (error) => {
+    console.log('Uncaught Exception', error);
 });
