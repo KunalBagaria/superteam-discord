@@ -2,8 +2,23 @@ import { Client, Intents, MessageEmbed } from 'discord.js';
 import dotenv from 'dotenv';
 import Queue from 'promise-queue';
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS] });
 dotenv.config();
+
+const meetRandomMember = async () => {
+    setTimeout(meetRandomMember, 6.048e+8);
+    const superteamServer = await client.guilds.cache.get('857091160295866388');
+    const serverMembers = await superteamServer.members.fetch()
+    const daoMembers = serverMembers.map((member) => member._roles.includes('890523787475439646') ? member : null).filter((member) => member !== null);
+    const userIDs = daoMembers.map((member) => member.user.id);
+    const randomUserID = () => userIDs[Math.floor(Math.random() * userIDs.length)];
+
+    const firstMember = randomUserID();
+    const secondMember = randomUserID();
+
+    const general = await client.channels.cache.get('857091161612484632')
+    general.send(`<@${firstMember}> and <@${secondMember}> are paired for a random member meet! Please fix a time that best suits both over the DMs.`)
+}
 
 // const override = async () => {
 //     const memeEmbed = new MessageEmbed()
@@ -19,6 +34,7 @@ dotenv.config();
 
 client.once('ready', () => {
 	console.log('Ready!');
+    setTimeout(meetRandomMember, 6.048e+8);
     setTimeout(sendMeme, 2.592e+8);
     // override();
 });
