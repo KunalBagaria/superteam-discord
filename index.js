@@ -89,8 +89,9 @@ function sendMeme() {
             .setImage(memeMessage.attachments.first().url)
             .setFooter(`Upvotes 👍  — ${meme.count}`)
             .setTimestamp()
-        queue.add(() => {
-            memeMessage.channel.send({ embeds: [memeEmbed] });
+        queue.add(async () => {
+            const generalChannel = await client.channels.cache.get('857091161612484632')
+            generalChannel.send({ embeds: [memeEmbed] });
         })
     })
     memes = [];
