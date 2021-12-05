@@ -6,18 +6,38 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 dotenv.config();
 
 const meetRandomMember = async () => {
+
     setTimeout(meetRandomMember, 6.048e+8);
     const superteamServer = await client.guilds.cache.get('857091160295866388');
     const serverMembers = await superteamServer.members.fetch()
     const daoMembers = serverMembers.map((member) => member._roles.includes('890523787475439646') ? member : null).filter((member) => member !== null);
     const userIDs = daoMembers.map((member) => member.user.id);
     const randomUserID = () => userIDs[Math.floor(Math.random() * userIDs.length)];
+    const pairs = []
 
-    const firstMember = randomUserID();
-    const secondMember = randomUserID();
+    userIDs.forEach((userID, index) => {
+        userIDs.splice(index, 1);
+        const randomPerson = randomUserID();
+        const randomIndex = userIDs.indexOf(randomPerson);
+        userIDs.splice(randomIndex, 1);
+        pairs.push({
+            first: userID,
+            second: randomPerson
+        })
+    })
 
-    const general = await client.channels.cache.get('857091161612484632')
-    general.send(`<@${firstMember}> and <@${secondMember}> are paired for a random member meet! Please fix a time that best suits both over the DMs.`)
+    pairs.forEach((pair, index) => {
+        setTimeout(async () => {
+            const firstMember = await client.users.cache.get(pair.first);
+            const secondMember = await client.users.cache.get(pair.second);
+            firstMember.send(`Hey ${firstMember.username}, you have been randomly paired with ${secondMember.username} for a meeting! You can DM them to set it up whenever you're free`)
+                .catch((e) => console.log(e));
+            console.log(`Sent DM to ${firstMember.username}`);
+            secondMember.send(`Hey ${secondMember.username}, you have been randomly paired with ${firstMember.username} for a meeting! You can DM them to set it up whenever you're free`)
+                .catch((e) => console.log(e));
+            console.log(`Sent DM to ${secondMember.username}`);
+        }, index * 3000)
+    })
 }
 
 // const override = async () => {
