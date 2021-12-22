@@ -5,6 +5,15 @@ import Queue from 'promise-queue';
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS] });
 dotenv.config();
 
+const meetMessage = (firstMember, secondMember) =>
+`
+Hey ${firstMember}, you have been randomly paired with ${secondMember} for a meeting! 
+
+Shoot them a DM/friend request when you can to set up a quick 15 minute call. 
+
+Feel free to use this short list of questions to get the conversation going: https://bip.so/@superteamdao/-DBiGW
+`
+
 const meetRandomMember = async () => {
 
     setTimeout(meetRandomMember, 6.048e+8);
@@ -30,10 +39,10 @@ const meetRandomMember = async () => {
         setTimeout(async () => {
             const firstMember = await client.users.cache.get(pair.first);
             const secondMember = await client.users.cache.get(pair.second);
-            firstMember.send(`Hey ${firstMember.username}, you have been randomly paired with ${secondMember.username} for a meeting! You can DM them to set it up whenever you're free`)
+            firstMember.send(meetMessage(firstMember.username, secondMember.username))
                 .catch((e) => console.log(e));
             console.log(`Sent DM to ${firstMember.username}`);
-            secondMember.send(`Hey ${secondMember.username}, you have been randomly paired with ${firstMember.username} for a meeting! You can DM them to set it up whenever you're free`)
+            secondMember.send(meetMessage(secondMember.username, firstMember.username))
                 .catch((e) => console.log(e));
             console.log(`Sent DM to ${secondMember.username}`);
         }, index * 3000)
