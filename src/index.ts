@@ -19,11 +19,11 @@ Feel free to use this short list of questions to get the conversation going: htt
 const meetRandomMember = async () => {
     setTimeout(meetRandomMember, 6.048e+8);
 	const users = await User.find({});
-	const userIDs = users.map((user) => user.ID);
+	const userIDs = users.map((user: any) => user.ID);
     const randomUserID = () => userIDs[Math.floor(Math.random() * userIDs.length)];
     const pairs: any[] = []
 
-    userIDs.forEach((userID, index) => {
+    userIDs.forEach((userID: any, index: any) => {
         userIDs.splice(index, 1);
         const randomPerson = randomUserID();
         const randomIndex = userIDs.indexOf(randomPerson);
