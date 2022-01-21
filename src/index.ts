@@ -45,7 +45,7 @@ const meetRandomMember = async () => {
 				secondMember.send(meetMessage(secondMember.username, firstMember.username))
 				console.log(`Sent DM to ${secondMember.username}`);
 			} catch (e) {
-				console.log(e);
+				console.log("Can't DM user");
 			}
         }, index * 3000)
     })
