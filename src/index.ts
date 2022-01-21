@@ -36,15 +36,17 @@ const meetRandomMember = async () => {
 
     pairs.forEach((pair, index) => {
         setTimeout(async () => {
-            const firstMember = await client.users.cache.get(pair.first);
-            const secondMember = await client.users.cache.get(pair.second);
-			if (!firstMember || !secondMember) return
-            firstMember.send(meetMessage(firstMember.username, secondMember.username))
-                .catch((e: any) => console.log(e));
-            console.log(`Sent DM to ${firstMember.username}`);
-            secondMember.send(meetMessage(secondMember.username, firstMember.username))
-                .catch((e: any) => console.log(e));
-            console.log(`Sent DM to ${secondMember.username}`);
+			try {
+				const firstMember = await client.users.cache.get(pair.first);
+				const secondMember = await client.users.cache.get(pair.second);
+				if (!firstMember || !secondMember) return
+				firstMember.send(meetMessage(firstMember.username, secondMember.username))
+				console.log(`Sent DM to ${firstMember.username}`);
+				secondMember.send(meetMessage(secondMember.username, firstMember.username))
+				console.log(`Sent DM to ${secondMember.username}`);
+			} catch (e) {
+				console.log(e);
+			}
         }, index * 3000)
     })
 }
